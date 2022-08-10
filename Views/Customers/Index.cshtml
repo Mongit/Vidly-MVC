@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Vidly2.Models.Customer>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+
+@if (!Model.Any())
+{
+    <p>We don't have any customers yet.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                @*<th>Discount Rate</th>*@
+                <th>MembershipRate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>
+                        @*@Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id }, null)*@
+                        @Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)
+                    </td>
+                    @*<td>@customer.MembershipType.DiscountRate%</td>*@
+                    <td>@customer.MembershipType.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@* @model Vidly2.ViewModels.RandomMovieViewModel
+            @{
+                ViewBag.Title = "Index";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+            }
+
+            <h2>Customers</h2>
+
+            @if (Model.Customers.Count > 0)
+            {
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model.Customers)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(@c.Name, "Details", "Customers", new { id = @c.Id }, null)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <text>We don't have customers yet.</text>
+            }
+        @model Vidly2.ViewModels.RandomMovieViewModel
+        @{
+            ViewBag.Title = "Index";
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+
+        <h2>Customers</h2>
+
+        @if (Model.Customers.Count > 0)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model.Customers)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(@c.Name, "Details", "Customers", new { id = @c.Id }, null)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <text>We don't have customers yet.</text>
+        }
+    @model Vidly2.ViewModels.RandomMovieViewModel
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <h2>Customers</h2>
+
+    @if (Model.Customers.Count > 0)
+    {
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Customers)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(@c.Name, "Details", "Customers", new { id = @c.Id }, null)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <text>We don't have customers yet.</text>
+    }
+*@
