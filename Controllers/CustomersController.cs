@@ -32,7 +32,6 @@ namespace Vidly2.Controllers
         }
 
         [HttpPost]
-        //public ActionResult Create(NewCustomerViewModel viewModel)
         public ActionResult Save(Customer customer)//also binds Customer because the fields of the form have .Customer. as prefix, and all attribute names are from Customers
         {
             if (customer.Id == 0)
@@ -70,14 +69,12 @@ namespace Vidly2.Controllers
 
         public ActionResult Index()
         {
-            //var customers = GetCustomers();
             var customers = _context.Customers.Include(c => c.MembershipType).ToList(); //Customers is a DBset defined in DBContext
             return View(customers);
         }
 
         public ActionResult Details(int id)
         {
-            //var customer = GetCustomers().SingleOrDefault( c => c.Id == id);
             var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
             
             if (customer == null)
@@ -85,54 +82,5 @@ namespace Vidly2.Controllers
 
             return View(customer);
         }
-
-        //private IEnumerable<Customer> GetCustomers()
-        //{
-        //    return new List<Customer>
-        //    {
-        //        new Customer { Id = 1, Name = "John Smith" },
-        //        new Customer { Id = 2, Name = "Mary Williams" }
-        //    };
-        //}
     }
 }
-
-
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Web;
-//using System.Web.Mvc;
-//using Vidly2.Models;
-//using Vidly2.ViewModels;
-
-//namespace Vidly2.Controllers
-//{
-//    public class CustomersController : Controller
-//    {
-//        // GET: Customers
-//        public ActionResult Index()
-//        {
-//            //var customers = new List<Customer>()
-//            //{
-//            //    new Customer() { Id = 1, Name = "John Smith" },
-//            //    new Customer() { Id = 2, Name = "Mary Williams" }
-//            //};
-//            var customers = new List<Customer>();
-//            var viewModel = new RandomMovieViewModel();
-//            viewModel.Customers = customers;
-
-//            return View(viewModel);
-//        }
-
-//        public ActionResult Details(int id)
-//        {
-//            if (id == 1)
-//                return View(new Customer() { Id = 1, Name = "John Smith" });
-//            if (id == 2)
-//                return View(new Customer() { Id = 2, Name = "Mary Williams" });
-//            return HttpNotFound();
-//        }
-//    }
-//}

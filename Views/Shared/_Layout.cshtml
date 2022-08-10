@@ -1,6 +1,4 @@
-﻿@*@model Vidly2.ViewModels.RandomMovieViewModel*@ 
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -12,7 +10,6 @@
 
 </head>
 <body>
-    @*@Html.Partial("_NavBar", Model.Movie) -----If there's not a second argument, the same object that has layout is passes to _NavBar*@
     @Html.Partial("_NavBar")
     <div class="container body-content">
         @RenderBody()

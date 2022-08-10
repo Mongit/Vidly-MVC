@@ -1,5 +1,4 @@
-﻿@*@model Vidly2.Models.Movie*@
-@model Vidly2.ViewModels.RandomMovieViewModel
+﻿@model Vidly2.ViewModels.RandomMovieViewModel
 @{
     ViewBag.Title = "Random";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,8 +10,6 @@
 }
 
 <h2 class="@className">@Model.Movie.Name</h2>
-@*<h2>@( ((Vidly2.Models.Movie)ViewData["Movie"]).Name )</h2>*@
-@*@ViewBag.RandomMovie*@
 
 @if (Model.Customers.Count == 0)
 {

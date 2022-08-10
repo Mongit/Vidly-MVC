@@ -13,13 +13,6 @@ namespace Vidly2
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //routes.MapRoute(
-            //    "MoviesByRealeaseDate", //the name of the route
-            //    "movies/released/{year}/{month}", //this is the path to write on browser
-            //    new { controller = "Movies", action = "ByReleaseDate" }, //this is the action that executes
-            //    new { year = @"\d{4}", month = @"\d{2}"} //this is the format or number of digits that the parameters should have
-            //    );
-
             routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
