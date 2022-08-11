@@ -33,6 +33,7 @@ namespace Vidly2.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)//also binds Customer because the fields of the form have .Customer. as prefix, and all attribute names are from Customers
         {
             if (!ModelState.IsValid)
