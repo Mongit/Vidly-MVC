@@ -27,22 +27,22 @@ namespace Vidly2.Controllers.Api
 
 
         // GET /api/customers/1
-        public CustomerDTO GetCustomer(int id)
+        public IHttpActionResult GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(x => x.Id == id);
 
             if (customer == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound();
 
-            return Mapper.Map<Customer, CustomerDTO>(customer);
+            return Ok(Mapper.Map<Customer, CustomerDTO>(customer));
         }
 
         // POST /api/customers
         [HttpPost] //This attribute Makes this action will ONLY be called if we send data in the req.body of the post.request
-        public CustomerDTO CreateCustomer(CustomerDTO customerDto)
+        public IHttpActionResult CreateCustomer(CustomerDTO customerDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var customer = Mapper.Map<CustomerDTO, Customer>(customerDto);
             _context.Customers.Add(customer);
@@ -50,7 +50,7 @@ namespace Vidly2.Controllers.Api
 
             customerDto.Id = customer.Id;
 
-            return customerDto;
+            return Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
         }
 
         // PUT /api/customers/1
