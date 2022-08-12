@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AutoMapper;
+using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using Vidly2.Models;
 using Vidly2.DTOs;
-using AutoMapper;
+using Vidly2.Models;
 
 namespace Vidly2.Controllers.Api
 {
@@ -20,9 +17,10 @@ namespace Vidly2.Controllers.Api
         }
 
         // GET /api/customers
-        public IEnumerable<CustomerDTO> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
-            return _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDTO>);
+            var customerDtos = _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDTO>);
+            return Ok(customerDtos);
         }
 
 
@@ -55,15 +53,15 @@ namespace Vidly2.Controllers.Api
 
         // PUT /api/customers/1
         [HttpPut]
-        public void Updtecustomer(int id, CustomerDTO customerDto)
+        public IHttpActionResult Updtecustomer(int id, CustomerDTO customerDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customerDto == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                NotFound();
 
             //if you have an existing object you can pass it as an argument.
             //We pass customerInDb, so _context can track all changes to this object 
@@ -72,19 +70,23 @@ namespace Vidly2.Controllers.Api
             Mapper.Map(customerDto, customerInDb);
             
             _context.SaveChanges();
+
+            return Ok();
         }
 
         // DELETE /api/customers/1
         [HttpDelete]
-        public void DeleteCustomer(int id)
+        public IHttpActionResult DeleteCustomer(int id)
         {
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customerInDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                NotFound();
 
             _context.Customers.Remove(customerInDb);
             _context.SaveChanges();
+
+            return Ok();
         }
     }
 }

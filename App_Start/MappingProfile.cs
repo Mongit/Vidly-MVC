@@ -9,7 +9,9 @@ namespace Vidly2.App_Start
         public MappingProfile()
         {
             Mapper.CreateMap<Customer, CustomerDTO>();
-            Mapper.CreateMap<CustomerDTO, Customer>();
+            Mapper.CreateMap<Movie, MovieDTO>();
+            Mapper.CreateMap<CustomerDTO, Customer>().ForMember(c => c.Id, opt => opt.Ignore()); //Ignora el ID al convertir de DTO a Domain object
+            Mapper.CreateMap<MovieDTO, Movie>().ForMember(m => m.Id, opt => opt.Ignore());
         }
     }
 }
