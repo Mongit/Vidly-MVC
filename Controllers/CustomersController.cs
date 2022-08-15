@@ -82,8 +82,12 @@ namespace Vidly2.Controllers
 
         public ActionResult Index()
         {
-            var customers = _context.Customers.Include(c => c.MembershipType).ToList(); //Customers is a DBset defined in DBContext
-            return View(customers);
+            //var customers = _context.Customers.Include(c => c.MembershipType).ToList(); //Customers is a DBset defined in DBContext
+            //return View(customers);
+
+
+            //we dont need the list of customers because gets them from API
+            return View();
         }
 
         public ActionResult Details(int id)

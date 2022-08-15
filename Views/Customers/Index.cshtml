@@ -6,41 +6,49 @@
 
 <h2>Customers</h2>
 
-@if (!Model.Any())
-{
-    <p>We don't have any customers yet.</p>
-}
-else
-{
-    <table id="customers" class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Customer</th>
-                <th>MembershipRate</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var customer in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)
-                    </td>
-                    <td>@customer.MembershipType.Name</td>
-                    <td>
-                        <button data-customer-id="@customer.Id" class="btn-link js-delete">Delete</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<table id="customers" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>MembershipRate</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
 @section scripts
 {
         <script>
             $(document).ready(function () {
-                $("#customers").DataTable();;
+                //DataTable Configuration object
+                $("#customers").DataTable({
+                    ajax: {
+                        url: "/api/customers",
+                        dataSrc: "" //is empty because DataTable takes data from the response we get from our API, which is an array of objects, which is the actual  datasource we're looking for
+                    },
+                    columns: [ //foreach column we suply an object, to specifiy various propertties of each col
+                        {
+                            data: "name", //Tells dataTable where get data to this col. In this case will look for name property in customer object. 
+                            render: function (data, row, customer) { //this funct will be call for each row in the table
+                                //data = value of data: "name",
+                                //type =  type of this col
+                                //row = is the actual object of row that its rendering, in this case, will be a customer
+                                return "<a href='/customers/edit/" + customer.id + "'>" + customer.name + "</a>"; // could apply customer.name or data param
+                            }, //If you dont specify this prop, will render data as a plain text
+                        },
+                        {
+                            data: "name"
+                        },
+                        {
+                            data: "id",
+                            render: function (data) {
+                                return "<button class='btn-link js-delete' data-customer-id='" + data + "'>Delete</button>"
+                            }
+                        }
+                    ]
+                });
 
                 $("#customers").on("click", ".js-delete", function () { //This filter allows to set one functiion for all elements that matches .js-delete
                     var button = $(this);
