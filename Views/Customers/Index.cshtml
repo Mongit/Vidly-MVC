@@ -23,7 +23,7 @@
         <script>
             $(document).ready(function () {
                 //DataTable Configuration object
-                $("#customers").DataTable({
+                var table = $("#customers").DataTable({
                     ajax: {
                         url: "/api/customers",
                         dataSrc: "" //is empty because DataTable takes data from the response we get from our API, which is an array of objects, which is the actual  datasource we're looking for
@@ -59,8 +59,7 @@
                                 url: "/api/customers/" + button.attr("data-customer-id"),// is the same as button $(this).attr("data-customer-id"),
                                 method: "DELETE",
                                 success: function () {
-                                    console.log("Success");
-                                    button.parents("tr").remove();
+                                    table.row(button.parents("tr")).remove().draw();//row, remove, draw are methods from DataTable plug in
                                 }
                             });
                         }
