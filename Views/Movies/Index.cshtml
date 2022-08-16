@@ -39,7 +39,23 @@ else
 {
     <script>
         $(document).ready(function () {
-            $("#movies").DataTable();
+            $("#movies").DataTable({
+                ajax: {
+                    url: "/api/movies",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, movie) {
+                            return "<a href='/movies/edit/" + movie.Id + "'>" + data + "</a>"
+                        }
+                    },
+                    {
+                        data: "name"
+                    }
+                ]
+            });
         });
     </script>
 }
