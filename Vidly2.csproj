@@ -252,6 +252,10 @@
     <Compile Include="Migrations\202208171359192_FixingColumnName.designer.cs">
       <DependentUpon>202208171359192_FixingColumnName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208172029444_AddPhoneToAplicationUser.cs" />
+    <Compile Include="Migrations\202208172029444_AddPhoneToAplicationUser.designer.cs">
+      <DependentUpon>202208172029444_AddPhoneToAplicationUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -572,6 +576,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208171359192_FixingColumnName.resx">
       <DependentUpon>202208171359192_FixingColumnName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208172029444_AddPhoneToAplicationUser.resx">
+      <DependentUpon>202208172029444_AddPhoneToAplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
