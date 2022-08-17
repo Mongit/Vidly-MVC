@@ -244,6 +244,14 @@
     <Compile Include="Migrations\202208162023548_SeedUsers.designer.cs">
       <DependentUpon>202208162023548_SeedUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208162153405_AddDrivingLicenceToApplicationUser.cs" />
+    <Compile Include="Migrations\202208162153405_AddDrivingLicenceToApplicationUser.designer.cs">
+      <DependentUpon>202208162153405_AddDrivingLicenceToApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208171359192_FixingColumnName.cs" />
+    <Compile Include="Migrations\202208171359192_FixingColumnName.designer.cs">
+      <DependentUpon>202208171359192_FixingColumnName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -558,6 +566,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208162023548_SeedUsers.resx">
       <DependentUpon>202208162023548_SeedUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208162153405_AddDrivingLicenceToApplicationUser.resx">
+      <DependentUpon>202208162153405_AddDrivingLicenceToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208171359192_FixingColumnName.resx">
+      <DependentUpon>202208171359192_FixingColumnName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
