@@ -14,6 +14,7 @@ namespace Vidly2.Models
         public string DrivingLicense { get; set; }
 
         [Required]
+        [StringLength(50)]
         public string Phone { get; set; }
     }
 
@@ -76,6 +77,7 @@ namespace Vidly2.Models
         public string DrivingLicense { get; set; }
 
         [Required]
+        [StringLength(50)]
         public string Phone { get; set; }
 
         [Required]
