@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "New Rental Form";
+}
+
+<h2>New Rental Form</h2>
+
+<form>
+    <div class="form-group">
+        <label>Customer</label>
+        <div class="tt-container">
+            <input id="customerTB" type="text" value="" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Movie</label>
+        <div class="tt-container">
+            <input id="movieTB" type="text" value="" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-sm-4">
+            <ul id="moviesList" class="list-group"></ul>
+        </div>
+    </div>
+
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            var viewModel = {
+                movieIds: []
+            };
+
+            var customers = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/customers?query=%QUERY',//the wildcard represents the input of the user in the input html tag
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#customerTB').typeahead(
+            {
+                minLength: 3,
+                highlight: true
+            }, {
+                name: 'customers',//Name property
+                display: 'name',//what property of our customers, should display in the suggestion list
+                source: customers //is customers from Bloodhound
+            }).on("typeahead:select", function (e, customer) {
+                viewModel.customerId = customer.id;
+            });
+
+            var movies = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/movies?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#movieTB').typeahead(
+                {
+                    minLength: 3,
+                    highlight: true
+                }, {
+                name: 'movies',//Name property
+                display: 'name',//what property of our customers, should display in the suggestion list
+                source: movies //is customers from Bloodhound
+            }).on("typeahead:select", function (e, movie) {
+                $("#moviesList").append("<li class='list-group-item'>" + movie.name + "</li>");
+                $("#movieTB").typeahead("val", "");
+                viewModel.movieIds.push(movie.Id);
+            });
+        });
+    </script>
+}
