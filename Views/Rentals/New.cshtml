@@ -32,6 +32,7 @@
 @section scripts
 {
     <script>
+
         $(document).ready(function () {
 
             var viewModel = {
@@ -91,10 +92,10 @@
                     data: viewModel
                 })
                 .done(function () {
-                    alert("Done");
+                    toastr.success("Rentals successfully recorded.");
                 })
                 .fail(function () {
-
+                    toastr.error("Something unexpected happend.");
                 });
             });
 
