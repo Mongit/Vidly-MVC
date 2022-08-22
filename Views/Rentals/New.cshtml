@@ -5,7 +5,7 @@
 
 <h2>New Rental Form</h2>
 
-<form>
+<form id="newRentalForm">
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
@@ -35,7 +35,7 @@
         $(document).ready(function () {
 
             var viewModel = {
-                movieIds: []
+                movies: []
             };
 
             var customers = new Bloodhound({
@@ -79,8 +79,25 @@
             }).on("typeahead:select", function (e, movie) {
                 $("#moviesList").append("<li class='list-group-item'>" + movie.name + "</li>");
                 $("#movieTB").typeahead("val", "");
-                viewModel.movieIds.push(movie.Id);
+                viewModel.movies.push(movie.id);
             });
+
+            $("#newRentalForm").submit(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "/api/rentals/rentMovie",
+                    method: "post",
+                    data: viewModel
+                })
+                .done(function () {
+                    alert("Done");
+                })
+                .fail(function () {
+
+                });
+            });
+
         });
     </script>
 }
