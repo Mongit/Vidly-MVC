@@ -1,4 +1,8 @@
-﻿.typeahead {
+﻿.twitter-typehead {
+    width: 300px;
+}
+
+.typeahead {
     background-color: #fff;
 }
 
@@ -39,13 +43,13 @@
 
 .tt-suggestion:hover {
     cursor: pointer;
-    color: #fff;
-    background-color: #0097cf;
+    color: #52656B;
+    background-color: #CDFF00;
 }
 
 .tt-suggestion.tt-cursor {
-    color: #fff;
-    background-color: #0097cf;
+    color: #52656B;
+    background-color: #CDFF00;
 }
 
 .tt-suggestion p {
