@@ -1,0 +1,133 @@
+﻿@model IEnumerable<Vidly2.Models.Rental>
+@{
+    ViewBag.Title = "Return";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Return</h2>
+
+<form id="returnMovieForm">
+    <div class="form-group">
+        <label>Customer</label>
+        <div class="tt-container">
+            <input id="customerTB" name="customerTB" required type="text" value="" class="form-control" />
+        </div>
+    </div>
+
+    <label>Movies</label>
+    <div class="row">
+        <div class="col-md-4 col-sm-4">
+            <table id="moviesList" class="table table-bordered table-hover" >
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn btn-primary">Submit</button>
+</form>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(document).ready(function () {
+
+            var vm = {
+                movies: []
+            };
+
+            var customers = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/customers?query=%QUERY',//the wildcard represents the input of the user in the input html tag
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#customerTB').typeahead(
+                {
+                    minLength: 1,
+                    highlight: true
+                }, {
+                name: 'customers',
+                display: 'name',
+                source: customers
+            }).on("typeahead:select", function (e, customer) {
+                vm.customerId = customer.id;
+                $.ajax({
+                    url: "/api/rentals?customerId=" + vm.customerId,
+                    method: "GET",
+                    dataType: "json"
+                })
+                    .done(function (data) {
+                        $("#moviesList td").remove();
+                        var parsed = $.parseJSON(data);
+                        $.each(parsed, function (index, item) {
+                            $("#moviesList").append(
+                                '<tr>'
+                                + '<td>"' + this.Movie.Name + '"</td>'
+                                + '<td class="btn-link js-return" data-rental-id="' + this.Id + '">Return</td>'
+                                + '</tr>')
+                        });
+                    })
+                    .fail(function (jqXHR, textStatus) {
+                        alert("Request failed:" + textStatus);
+                    });
+
+            });
+
+            $("#moviesList").on("click", ".js-return", function () {
+                vm.movies.push($(this).attr("data-rental-id"));
+                $(this).removeClass('btn-link');
+            });
+
+            //send it to update the database
+            //submit changes
+
+            $.validator.addMethod("validCustomer", function () {
+                return vm.customerId && vm.customerId > 0;
+            }, "Please select a valid customer");
+
+            $.validator.addMethod("atLeastOneMovie", function () {
+                return vm.movies.length > 0;
+            }, "Please return at least one movie");
+
+            var validator = $("#returnMovieForm").validate({
+                rules: {
+                    customerTB: { validCustomer: true },
+                    movieList: { atLeastOneMovie: true }
+                },
+
+                submitHandler: function () {
+                    $.ajax({
+                        url: "/api/rentals",
+                        method: "PUT",
+                        data: vm
+                    })
+                        .done(function () {
+                            toastr.success("Yey! movies were return succesfully.");
+                            $("#customerTB").typeahead("val", "");
+                            $("#moviesList td").remove();
+                            vm = { movies: [] };
+                            validator.resetForm();
+                        })
+                        .fail(function () {
+                            toastr.error("Ups! something went wrong, please try again");
+                        });
+
+                    return false; //e.preventDefault();
+                }
+            });
+
+        });
+
+    </script>
+}

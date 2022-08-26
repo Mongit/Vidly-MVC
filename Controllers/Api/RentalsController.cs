@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 using Vidly2.DTOs;
@@ -41,6 +43,40 @@ namespace Vidly2.Controllers.Api
             _context.SaveChanges();
 
             return Ok();//We dont use created(), because ask for URL to the new object, and here we arre creating multiple objects.
+        }
+
+
+        //GET /api/rentals?customerId=1
+        public IHttpActionResult GetRentalsByCustomerId(int customerId)
+        {
+            if (customerId == 0)
+                return BadRequest();
+
+            var movies = _context.Rentals
+                .Include(m => m.Movie)
+                .Include(m => m.Customer)
+                .Where(m => m.Customer.Id == customerId && m.DateReturned == null)
+                .ToList();
+
+            return Ok(JsonConvert.SerializeObject(movies));
+        }
+
+        //GET /api/rentals
+        [HttpPut]
+        public IHttpActionResult ReturnMovie(RentalDTO model)
+        {
+            //model.Movies are used for the Ids of the rentals
+            var rentalsInDb = _context.Rentals.Include(r => r.Movie).Where(r => model.Movies.Contains(r.Id)).ToList();
+            foreach (var r in rentalsInDb)
+            {
+                var movieInDb = _context.Movies.SingleOrDefault(m => m.Id == r.Movie.Id);
+                r.DateReturned = DateTime.Now;
+                movieInDb.NumberAvailable++;
+            }
+
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }
