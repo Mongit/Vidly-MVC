@@ -290,6 +290,10 @@
     <Compile Include="Migrations\202208291357516_AddNumberOfRentedMoviesInCustomer.designer.cs">
       <DependentUpon>202208291357516_AddNumberOfRentedMoviesInCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208291620352_AddIsDelinquentOnPaymentOnCustomers.cs" />
+    <Compile Include="Migrations\202208291620352_AddIsDelinquentOnPaymentOnCustomers.designer.cs">
+      <DependentUpon>202208291620352_AddIsDelinquentOnPaymentOnCustomers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -645,6 +649,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208291357516_AddNumberOfRentedMoviesInCustomer.resx">
       <DependentUpon>202208291357516_AddNumberOfRentedMoviesInCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208291620352_AddIsDelinquentOnPaymentOnCustomers.resx">
+      <DependentUpon>202208291620352_AddIsDelinquentOnPaymentOnCustomers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

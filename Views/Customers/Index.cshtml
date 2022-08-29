@@ -15,6 +15,7 @@
             <th>Customer</th>
             <th>MembershipRate</th>
             <th>Delete</th>
+            <th>Status on payment</th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +50,14 @@
                             render: function (data) {
                                 return "<button class='btn-link js-delete' data-customer-id='" + data + "'>Delete</button>"
                             }
+                        },
+                        {
+                            data: "isDelinquentOnPayment",
+                            render: function (data, row, customer) {
+                                var title = data ? "Irregular" : "Regular";
+                                var btnTitle = data ? " Change to Regular" : "Set as Irregular";
+                                return title + "    <button class='btn-link js-delinquent' data-customer-val='" + data + "' data-customer-id='" + customer.id + "' >" + btnTitle + "</button>";
+                            }
                         }
                     ]
                 });
@@ -68,6 +77,26 @@
                         }
                     });
                 });
+
+                $("#customers").on("click", ".js-delinquent", function () { //This filter allows to set one functiion for all elements that matches .js-delete
+                    var button = $(this);
+                    var value = button.prop("data-customer-val");
+
+                    bootbox.confirm("Are you sure you want to change the status of this customer?", function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/customers?customerId=" + button.attr("data-customer-id"),// is the same as button $(this).attr("data-customer-id"),
+                                method: "PUT",
+                                success: function () {
+                                    //button.prop("value", value ? "Irregular" : "Regular");
+                                    //button.attr("data-customer-val", value ? false : true);
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+                });
+
             });
         </script>
 }

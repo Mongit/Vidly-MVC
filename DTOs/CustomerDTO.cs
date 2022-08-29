@@ -21,5 +21,7 @@ namespace Vidly2.DTOs
         public DateTime? Birthdate { get; set; }
 
         public int NumberOfRentedMovies { get; set; }
+        
+        public bool IsDelinquentOnPayment { get; set; }
     }
 }

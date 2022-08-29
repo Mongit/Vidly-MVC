@@ -24,7 +24,7 @@ namespace Vidly2.Controllers.Api
                 .Include(c => c.MembershipType);
 
             if (!String.IsNullOrWhiteSpace(query))
-                customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+                customersQuery = customersQuery.Where(c => c.Name.Contains(query) && c.IsDelinquentOnPayment == false);
 
             var customerDtos = customersQuery
                 .ToList()
@@ -93,6 +93,23 @@ namespace Vidly2.Controllers.Api
                 NotFound();
 
             _context.Customers.Remove(customerInDb);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+
+        // PUT /api/customers?customerId=1
+        [HttpPut]
+        public IHttpActionResult UpdateStatusPayment(int customerId)
+        {
+            var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == customerId);
+
+            if (customerInDb == null)
+                NotFound();
+
+            customerInDb.IsDelinquentOnPayment = !customerInDb.IsDelinquentOnPayment;
+
             _context.SaveChanges();
 
             return Ok();
