@@ -36,6 +36,8 @@
 
         $(document).ready(function () {
 
+            var customerTemp;
+
             var viewModel = {
                 movies: []
             };
@@ -59,6 +61,9 @@
                 source: customers //is customers from Bloodhound
             }).on("typeahead:select", function (e, customer) {
                 viewModel.customerId = customer.id;
+                customerTemp = customer;
+                if (customer.numberOfRentedMovies >= 3)
+                    toastr.warning("This client already has rented the limit of movies.");
             });
 
             var movies = new Bloodhound({
@@ -79,9 +84,15 @@
                 display: 'name',//what property of our customers, should display in the suggestion list
                 source: movies //is customers from Bloodhound
             }).on("typeahead:select", function (e, movie) {
-                $("#moviesList").append("<li class='list-group-item'>" + movie.name + "</li>");
-                $("#movieTB").typeahead("val", "");
-                viewModel.movies.push(movie.id);
+                if (customerTemp.numberOfRentedMovies >= 3)
+                    toastr.warning("This client has reach the limit of rented movies.");
+
+                else {
+                    $("#moviesList").append("<li class='list-group-item'>" + movie.name + "</li>");
+                    $("#movieTB").typeahead("val", "");
+                    viewModel.movies.push(movie.id);
+                    customerTemp.numberOfRentedMovies++;
+                }
             });
 
             $.validator.addMethod("validCustomer", function () {

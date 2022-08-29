@@ -21,5 +21,7 @@ namespace Vidly2.Models
         [Display(Name = "Date of Birth")]
         [Min18YearsIfAMember]
         public DateTime? Birthdate { get; set; }
+
+        public int NumberOfRentedMovies { get; set; }
     }
 }

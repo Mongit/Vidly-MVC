@@ -28,7 +28,11 @@ namespace Vidly2.Controllers.Api
                 if (movie.NumberAvailable == 0)
                     return BadRequest("Movie is not available");
 
+                if (customer.NumberOfRentedMovies >= 3)
+                    return BadRequest("You already have the limit of retned movies");
+
                 movie.NumberAvailable--;
+                customer.NumberOfRentedMovies++;
 
                 var rental = new Rental
                 {
@@ -67,11 +71,14 @@ namespace Vidly2.Controllers.Api
         {
             //model.Movies are used for the Ids of the rentals
             var rentalsInDb = _context.Rentals.Include(r => r.Movie).Where(r => model.Movies.Contains(r.Id)).ToList();
+            var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == model.CustomerId);
+
             foreach (var r in rentalsInDb)
             {
                 var movieInDb = _context.Movies.SingleOrDefault(m => m.Id == r.Movie.Id);
                 r.DateReturned = DateTime.Now;
                 movieInDb.NumberAvailable++;
+                customerInDb.NumberOfRentedMovies--;
             }
 
             _context.SaveChanges();

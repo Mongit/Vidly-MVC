@@ -19,5 +19,7 @@ namespace Vidly2.DTOs
 
         //[Min18YearsIfAMember]
         public DateTime? Birthdate { get; set; }
+
+        public int NumberOfRentedMovies { get; set; }
     }
 }
