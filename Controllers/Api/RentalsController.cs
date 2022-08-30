@@ -20,7 +20,7 @@ namespace Vidly2.Controllers.Api
         [HttpPost]
         public IHttpActionResult RentMovie(RentalDTO model)
         {
-            var customer = _context.Customers.Single(c => c.Id == model.CustomerId);
+            var customer = _context.Customers.Include(c => c.MembershipType).Single(c => c.Id == model.CustomerId);
             var movies = _context.Movies.Where(m => model.Movies.Contains(m.Id)).ToList();
             var rental = new Rental();
 
@@ -47,13 +47,13 @@ namespace Vidly2.Controllers.Api
 
             _context.SaveChanges();
 
-            if (model.DiscountRate > 0)
+            if (model.HasDiscount)
             {
                 _context.Sales.Add(new Sale
                 {
                     Customer = customer,
                     Rental = rental,
-                    DiscountRate = model.DiscountRate,
+                    DiscountRate = customer.MembershipType.DiscountRate,
                     Total = 0,
                     Subtotal = 0
                 });

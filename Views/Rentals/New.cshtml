@@ -27,9 +27,8 @@
     </div>
 
     <div class="form-group">
-        <label>Discount</label>
         <div class="tt-container">
-            <input id="discountTB" name="discountTB" type="number" value="" class="form-control" />
+            <label id="checkboxLB" name="checkboxLB"></label>
         </div>
     </div>
 
@@ -67,8 +66,12 @@
                 display: 'name',//what property of our customers, should display in the suggestion list
                 source: customers //is customers from Bloodhound
             }).on("typeahead:select", function (e, customer) {
+                $("#checkboxdiv").remove();
                 viewModel.customerId = customer.id;
                 customerTemp = customer;
+                $("#checkboxLB").append('<div class="form-check" id="checkboxdiv">'
+                    + '<input id="discountTB" name="discountTB" type="checkbox" class="form-check-input" />   '
+                    + '<label class="form-check-label">Apply discount of ' + customer.membershipType.discountRate + '%</label></div>');
                 if (customer.numberOfRentedMovies >= 3)
                     toastr.warning("This client already has rented the limit of movies.");
             });
@@ -91,6 +94,7 @@
                 display: 'name',//what property of our customers, should display in the suggestion list
                 source: movies //is customers from Bloodhound
             }).on("typeahead:select", function (e, movie) {
+
                 if (customerTemp.numberOfRentedMovies >= 3)
                     toastr.warning("This client has reach the limit of rented movies.");
 
@@ -114,13 +118,9 @@
                 rules: {
                     customerTB: { required: true, validCustomer: true },
                     movieTB: { atLeastOneMovie: true },
-                    discountTB: { number: true }
-                },
-                messages: {
-                    discountTB: { number: "Please use decimal numbers only." }
                 },
                 submitHandler: function () {
-                    viewModel.discountRate = $("#discountTB").val();
+                    viewModel.hasDiscount = $("#discountTB").is(':checked');
                     $.ajax({
                         url: "/api/rentals/rentMovie",
                         method: "post",
@@ -133,7 +133,7 @@
                         $("#customerTB").typeahead("val", "");
                         $("#movieTB").typeahead("val", "");
                         $("#moviesList").empty();
-                        $("#discountTB").val('');
+                        $("#checkboxdiv").remove();
 
                         viewModel = { movies: [] };
 

@@ -7,6 +7,6 @@ namespace Vidly2.DTOs
         public int Id { get; set; }
         public int CustomerId { get; set; }
         public List<int> Movies { get; set; }
-        public decimal DiscountRate { get; set; }
+        public bool HasDiscount { get; set; }
     }
 }
