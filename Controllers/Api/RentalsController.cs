@@ -22,6 +22,7 @@ namespace Vidly2.Controllers.Api
         {
             var customer = _context.Customers.Single(c => c.Id == model.CustomerId);
             var movies = _context.Movies.Where(m => model.Movies.Contains(m.Id)).ToList();
+            var rental = new Rental();
 
             foreach (var movie in movies)
             {
@@ -34,7 +35,7 @@ namespace Vidly2.Controllers.Api
                 movie.NumberAvailable--;
                 customer.NumberOfRentedMovies++;
 
-                var rental = new Rental
+                rental = new Rental
                 {
                     Customer = customer,
                     Movie = movie,
@@ -45,6 +46,20 @@ namespace Vidly2.Controllers.Api
             }
 
             _context.SaveChanges();
+
+            if (model.DiscountRate > 0)
+            {
+                _context.Sales.Add(new Sale
+                {
+                    Customer = customer,
+                    Rental = rental,
+                    DiscountRate = model.DiscountRate,
+                    Total = 0,
+                    Subtotal = 0
+                });
+
+                _context.SaveChanges();
+            }
 
             return Ok();//We dont use created(), because ask for URL to the new object, and here we arre creating multiple objects.
         }

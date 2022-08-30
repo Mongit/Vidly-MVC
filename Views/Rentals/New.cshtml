@@ -9,20 +9,27 @@
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input id="customerTB" name="customerTB" required type="text" value="" class="form-control" /> @*data-rule-validCustomer="true"*@
+            <input id="customerTB" name="customerTB" required type="text" value="" class="form-control" />
         </div>
     </div>
 
     <div class="form-group">
         <label>Movie</label>
         <div class="tt-container">
-            <input id="movieTB" name="movieTB" type="text" value="" class="form-control" />@*data-rule-atLeastOneMovie="true"*@
+            <input id="movieTB" name="movieTB" type="text" value="" class="form-control" />
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-4 col-sm-4">
             <ul id="moviesList" class="list-group"></ul>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Discount</label>
+        <div class="tt-container">
+            <input id="discountTB" name="discountTB" type="number" value="" class="form-control" />
         </div>
     </div>
 
@@ -106,10 +113,14 @@
             var validator = $("#newRentalForm").validate({
                 rules: {
                     customerTB: { required: true, validCustomer: true },
-                    movieTB: { atLeastOneMovie: true }
+                    movieTB: { atLeastOneMovie: true },
+                    discountTB: { number: true }
                 },
-
+                messages: {
+                    discountTB: { number: "Please use decimal numbers only." }
+                },
                 submitHandler: function () {
+                    viewModel.discountRate = $("#discountTB").val();
                     $.ajax({
                         url: "/api/rentals/rentMovie",
                         method: "post",
@@ -122,6 +133,7 @@
                         $("#customerTB").typeahead("val", "");
                         $("#movieTB").typeahead("val", "");
                         $("#moviesList").empty();
+                        $("#discountTB").val('');
 
                         viewModel = { movies: [] };
 
@@ -130,7 +142,6 @@
                     .fail(function () {
                         toastr.error("Something unexpected happend.");
                     });
-
                     return false;// es lo mismo que e.preventDefault();
                 }
             });
